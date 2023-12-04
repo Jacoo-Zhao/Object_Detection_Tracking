@@ -1,5 +1,7 @@
 from ultralytics import YOLO
 import cv2
+import os
+
 
 # Single Prediction Template
 def yolo_model_demot():
@@ -26,3 +28,33 @@ def frame_subtraction_from_video(video_path=''):
             print('Frame ' + str(count) + ' saved.')
         count += 1
     return 0
+
+def rename_files(folder_path):
+    # 遍历文件夹中的文件
+    for filename in os.listdir(folder_path):
+        # 检查文件名是否符合要求
+        if filename.startswith("1_trim_frame_") and filename.endswith(".png"):
+            # 提取出n的值
+            n = filename.split("_")[-1].split(".")[0]
+
+            # 构造新的文件名
+            new_filename = f"frame_{n}.png"
+
+            # 构造完整的文件路径
+            old_filepath = os.path.join(folder_path, filename)
+            new_filepath = os.path.join(folder_path, new_filename)
+
+            # 重命名文件
+            os.rename(old_filepath, new_filepath)
+            print(f"已将文件 {filename} 重命名为 {new_filename}")
+
+
+
+
+if __name__ == "__main__":
+    # 指定文件夹路径
+    folder_path = "data/imgs_1_trim"
+
+    # 调用函数进行重命名
+    rename_files(folder_path)
+

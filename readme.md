@@ -8,7 +8,7 @@
 
 For example:
 
-`python preprocess.py --first_frame_path data/imgs_1_trim/1_trim_frame_60.png`
+`python preprocess.py --first_frame_path data/imgs_1_trim/frame_60.png`
 
 `./run_track.sh  template_json_file_produced_by_the_last_step   images_folder_to_be_detected`
 

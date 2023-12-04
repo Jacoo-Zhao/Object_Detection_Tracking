@@ -50,7 +50,7 @@ def first_img_crop(img_orig_path=''):
 
 
 def class_selection(img_orig_cropped_path="", detected_objects_path="", draw=False):
-    print_heading("Executing Function class_selection", Color.RED)
+    print_heading("Executing Function class_selection", Color.GREEN)
 
     # 读取图像
     image = cv2.imread(img_orig_cropped_path)
