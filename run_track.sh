@@ -5,8 +5,6 @@ runs_path="runs"
 if [ ! -d "$runs_path" ]; then
     echo "The 'runs' path does not exist. Creating it now."
     mkdir "$runs_path"
-else
-    echo "The 'runs' path already exists."
 fi
 
 template_path=$1

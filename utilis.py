@@ -11,7 +11,7 @@ def yolo_model_demot():
 
 
 def frame_subtraction_from_video(video_path=''):
-    video_path = "../data/videos/1_2023_10_11_14_34_trim.mp4"
+    video_path = video_path
     video = cv2.VideoCapture(video_path)
     assert video.isOpened(), "Video could not be read, check with os.path.exists()"
 
@@ -24,7 +24,7 @@ def frame_subtraction_from_video(video_path=''):
         if not tf:
             break
         if count % 2 == 0:
-            cv2.imwrite('../data/imgs1_trim/1_trim_frame_' + str(count) + '.png', frame)
+            cv2.imwrite('data/imgs_286_trim_1/frame_' + str(count) + '.png', frame)
             print('Frame ' + str(count) + ' saved.')
         count += 1
     return 0
@@ -33,7 +33,7 @@ def rename_files(folder_path):
     # 遍历文件夹中的文件
     for filename in os.listdir(folder_path):
         # 检查文件名是否符合要求
-        if filename.startswith("1_trim_frame_") and filename.endswith(".png"):
+        if filename.startswith("#286_frame_") and filename.endswith(".png"):
             # 提取出n的值
             n = filename.split("_")[-1].split(".")[0]
 
@@ -49,12 +49,9 @@ def rename_files(folder_path):
             print(f"已将文件 {filename} 重命名为 {new_filename}")
 
 
-
-
 if __name__ == "__main__":
-    # 指定文件夹路径
-    folder_path = "data/imgs_1_trim"
 
-    # 调用函数进行重命名
-    rename_files(folder_path)
+    frame_subtraction_from_video(video_path='data/videos/286_trim_1.mp4')
+
+    # rename_files(folder_path = "data/imgs_286")
 

@@ -1,4 +1,6 @@
 import csv
+import pdb
+
 import cv2
 import numpy as np
 import copy
@@ -36,8 +38,9 @@ def first_img_crop(img_orig_path=''):
     selected_roi = image[int(y):int(y + h), int(x):int(x + w)]
 
     # 保存ROI图像
-    current_time = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
+    current_time = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
     output_path = img_orig_path.replace('.png', f'_cropped_{current_time}.png')
+    # pdb.set_trace()
     cv2.imwrite(output_path, selected_roi)
 
     # 显示选择的ROI
@@ -117,15 +120,6 @@ def class_selection(img_orig_cropped_path="", detected_objects_path="", draw=Fal
     print(f"选定的对象类别:{user_input_cls}, 对象ID:{user_input_id}")
 
     template_path = img_orig_cropped_path.replace('.png', '_template.png')
-
-    # # 分离文件名和扩展名
-    # img_name, img_ext = os.path.splitext(os.path.basename(img_orig_cropped_path))
-    #
-    # # 构造新文件名
-    # new_img_name = f"{img_name}_template{img_ext}"
-    #
-    # # 构造新文件路径
-    # new_img_path = os.path.join(os.path.dirname(img_orig_cropped_path), new_img_name)
 
     cv2.imwrite(template_path, imgs[user_input_id])
     print("Template Image Saved:", template_path)
