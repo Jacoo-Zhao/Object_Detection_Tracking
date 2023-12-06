@@ -1,14 +1,16 @@
+import argparse
+import copy
 import csv
-import pdb
+import datetime
+import json
+import os
+import re
 
 import cv2
 import numpy as np
-import copy
-import datetime
-import argparse
+
 import track
-import json
-import os
+
 
 # ANSI颜色代码
 class Color:
@@ -97,14 +99,16 @@ def class_selection(img_orig_cropped_path="", detected_objects_path="", draw=Fal
         # 画出ROI
         cv2.rectangle(imgs[i], (x1, y1), (x2, y2), (0, 255, 0), 2)  # 绿色边框，线宽为2
         i += 1
-
-    # 显示图像
-    if draw:
-        imgs_show = np.hstack(imgs)
-        cv2.imshow('Image with ROI', imgs_show)
-        cv2.waitKey(30)
+        cv2.waitKey(0)
         cv2.destroyAllWindows()
 
+    # # 显示图像
+    # if draw:
+    #     imgs_show = np.hstack(imgs)
+    #     cv2.imshow('Image with ROI', imgs_show)
+    #     cv2.waitKey(30)
+    #     cv2.destroyAllWindows()
+    #
     while True:
         try:
             user_input_cls, user_input_id = map(int,
@@ -124,27 +128,56 @@ def class_selection(img_orig_cropped_path="", detected_objects_path="", draw=Fal
     cv2.imwrite(template_path, imgs[user_input_id])
     print("Template Image Saved:", template_path)
 
-    json_file_path = detected_objects_path.replace('.csv', '.json')
-    with open(json_file_path, 'w') as json_file:
+    template_json_path = detected_objects_path.replace('.csv', '.json')
+    with open(template_json_path, 'w') as json_file:
         json.dump(data_list[user_input_id], json_file)
 
-    print(f"Template saved as JSON file: {json_file_path}")
+    print(f"Template saved as JSON file: {template_json_path}")
 
-    return data_list[user_input_id]
+    return data_list[user_input_id], template_json_path
 
+def main(args):
+
+    # 打印结果
+    print(f"template_json: {args.template_json_path}")
+    print(f"input_folder: {args.input_folder}")
+
+    # 循环处理照片
+    for i in range(0, 5, 2):
+        filename = os.path.join(args.input_folder, f"frame_{i}.png")
+        if os.path.exists(filename):
+            os.system(f"python track.py --yolo-model yolov8n --source {filename} --template {args.template_json_path}")
+        else:
+            print(f"File not found: {filename}")
+
+    # 定义正则表达式模式
+    pattern = r"frame_(\d+)\.png"
+    # 使用 tqdm 显示循环进度
+    for filename in os.listdir(args.input_folder):
+        if re.match(pattern, filename):
+            file_path = os.path.join(args.input_folder, filename)
+            os.system(f"python track.py --yolo-model yolov8n --source {file_path} --template {args.template_json_path}")
+        else:
+            print(f"Skipping non-PNG file: {filename}")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--first_frame_path", help="path to input first frame")
+    parser.add_argument("--input_folder", help="Path to the input images folder")
     args = parser.parse_args()
+
     img_orig_cropped = first_img_crop(img_orig_path=args.first_frame_path)
 
-    # img_orig_cropped = ' ../data/imgs_1_trim/1_trim_frame_0_cropped_2023-12-04-03:59:28.png'
     print_heading("Executing Function track.run", Color.YELLOW)
     opt = track.parse_opt()
     opt.source = img_orig_cropped
     detected_objects_path = track.run(opt)
 
-    bbox_template = class_selection(img_orig_cropped_path=img_orig_cropped,
+    bbox_template, args.template_json_path = class_selection(img_orig_cropped_path=img_orig_cropped,
                                     detected_objects_path=detected_objects_path,
                                     draw=True)
+
+    print_heading("Executing Function track.py", Color.GREEN)
+    main(args)
+
+

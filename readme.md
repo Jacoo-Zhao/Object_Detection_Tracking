@@ -2,17 +2,17 @@
 
 `cd opt`
 
-`pip install -r requirements`
+```
+pip install ultralytics
+```
 
-`python preprocess.py --first_frame_path  path_to_your_first_image`
-
-For example:
-
-`python preprocess.py --first_frame_path data/imgs_1_trim/frame_60.png`
-
-`./run_track.sh  template_json_file_produced_by_the_last_step   images_folder_to_be_detected`
+```
+python main.py --first_frame_path  path_to_your_first_image --input_folder path_to_images folder` 
+```
 
 For example:
-` ./run_track.sh runs/predicted_labels_1701644122619.json  data/imgs_286/  `
 
+```
+python main.py --first_frame_path data/imgs_1_trim/frame_60.png --input_folder data/imgs_286
 
+ ```

@@ -26,10 +26,10 @@ def run(args):
         # 提取 class_id 变量
         args.classes = data.get('class_id', None)
 
-        if args.classes is not None:
-            print(f"\nClass_id: {args.classes}")
-        else:
-            print("未找到 class_id 变量或其值为 None")
+        # if args.classes is not None:
+        #     print(f"\nClass_id: {args.classes}")
+        # else:
+        #     print("未找到 class_id 变量或其值为 None")
 
 
     yolo = YOLO(
@@ -90,7 +90,7 @@ def run(args):
     directory = 'runs/'
     filepath = os.path.join(directory, filename)
     df.to_csv(filepath, index=False)
-    print(f'检测结果已保存至: {filepath}')
+    # print(f'检测结果已保存至: {filepath}')
     return filepath
 
 
@@ -151,6 +151,7 @@ def parse_opt():
     parser.add_argument('--template', default='', type=str,
                         help='object template path')
     parser.add_argument("--first_frame_path", help="path to input first frame")
+    parser.add_argument("--input_folder", help="Path to the input images folder")
 
     opt = parser.parse_args()
 
