@@ -96,6 +96,7 @@ def class_selection(img_orig_cropped_path="", detected_objects_path="", draw=Fal
         x1, y1 = int(center_x - width / 2), int(center_y - height / 2)
         x2, y2 = int(center_x + width / 2), int(center_y + height / 2)
 
+        print('test')
         # 画出ROI
         cv2.rectangle(imgs[i], (x1, y1), (x2, y2), (0, 255, 0), 2)  # 绿色边框，线宽为2
         i += 1
@@ -110,6 +111,7 @@ def class_selection(img_orig_cropped_path="", detected_objects_path="", draw=Fal
     #     cv2.destroyAllWindows()
     #
     while True:
+        print('test2')
         try:
             user_input_cls, user_input_id = map(int,
                                                 input("输入目标对象类别和id（用空格隔开): ").replace(',', ' ').split())
@@ -175,7 +177,7 @@ if __name__ == '__main__':
 
     bbox_template, args.template_json_path = class_selection(img_orig_cropped_path=img_orig_cropped,
                                     detected_objects_path=detected_objects_path,
-                                    draw=True)
+                                    draw=False)
 
     print_heading("Executing Function track.py", Color.GREEN)
     main(args)
