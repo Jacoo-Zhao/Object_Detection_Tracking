@@ -53,7 +53,6 @@ def first_img_crop(img_orig_path=''):
     print(f"处理后的图像已保存到: {output_path}")
     return output_path
 
-
 def class_selection(img_orig_cropped_path="", detected_objects_path="", draw=False):
     print_heading("Executing Function class_selection", Color.GREEN)
 
@@ -96,22 +95,20 @@ def class_selection(img_orig_cropped_path="", detected_objects_path="", draw=Fal
         x1, y1 = int(center_x - width / 2), int(center_y - height / 2)
         x2, y2 = int(center_x + width / 2), int(center_y + height / 2)
 
-        print('test')
         # 画出ROI
         cv2.rectangle(imgs[i], (x1, y1), (x2, y2), (0, 255, 0), 2)  # 绿色边框，线宽为2
         i += 1
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+
+    # 显示图像
+    if draw:
+        imgs_show = np.hstack(imgs)
+        cv2.imshow('Image with ROI', imgs_show)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
-
-    # # 显示图像
-    # if draw:
-    #     imgs_show = np.hstack(imgs)
-    #     cv2.imshow('Image with ROI', imgs_show)
-    #     cv2.waitKey(30)
-    #     cv2.destroyAllWindows()
     #
     while True:
-        print('test2')
         try:
             user_input_cls, user_input_id = map(int,
                                                 input("输入目标对象类别和id（用空格隔开): ").replace(',', ' ').split())
@@ -144,23 +141,16 @@ def main(args):
     print(f"template_json: {args.template_json_path}")
     print(f"input_folder: {args.input_folder}")
 
-    # 循环处理照片
-    for i in range(0, 5, 2):
-        filename = os.path.join(args.input_folder, f"frame_{i}.png")
-        if os.path.exists(filename):
-            os.system(f"python track.py --yolo-model yolov8n --source {filename} --template {args.template_json_path}")
-        else:
-            print(f"File not found: {filename}")
-
     # 定义正则表达式模式
     pattern = r"frame_(\d+)\.png"
-    # 使用 tqdm 显示循环进度
-    for filename in os.listdir(args.input_folder):
+    filenames = (os.listdir(args.input_folder))
+    filenames.sort()
+    for filename in filenames:
         if re.match(pattern, filename):
             file_path = os.path.join(args.input_folder, filename)
             os.system(f"python track.py --yolo-model yolov8n --source {file_path} --template {args.template_json_path}")
         else:
-            print(f"Skipping non-PNG file: {filename}")
+            print(f"Skipping unmatched frames: {filename}")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -179,7 +169,7 @@ if __name__ == '__main__':
                                     detected_objects_path=detected_objects_path,
                                     draw=False)
 
-    print_heading("Executing Function track.py", Color.GREEN)
-    main(args)
+    # print_heading("Executing Function track.py", Color.GREEN)
+    # main(args)
 
 
