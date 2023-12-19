@@ -9,6 +9,12 @@ from skimage.metrics import structural_similarity as ssim
 
 
 def produce_first_template(image_ori, template_path):
+    """
+    produce the first object template
+    :param image_ori: first frame cropped
+    :param template_path: template json file path
+    :return: numpy.ndarray real_object
+    """
     image = cv2.imread(image_ori)
     template_path =template_path
     with open(template_path, 'r') as json_file:
@@ -96,7 +102,7 @@ if __name__ == "__main__":
     image_cropped = 'data/imgs_1_trim/frame_000_cropped_2023-12-15-19-56-18_template.png'
     first_template = produce_first_template(image_cropped,template_json)
     # candidate_paths = produce_candidates(draw=True)
-    candidate_paths = []
+    # candidate_paths = []
 
     most_similar_candidate, similarity_score = find_most_similar_template(first_template, candidate_paths)
 

@@ -27,7 +27,7 @@ def print_heading(message, color):
     print_colored(message, color)
     print("#" * 40)
 
-def first_img_crop(img_orig_path=''):
+def first_img_crop(img_orig_path='', img_save_path='runs/imgs/'):
     print_heading("Executing Function first_img_crop", Color.GREEN)
     image = cv2.imread(img_orig_path)
 
@@ -41,9 +41,10 @@ def first_img_crop(img_orig_path=''):
 
     # 保存ROI图像
     current_time = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
-    output_path = img_orig_path.replace('.png', f'_cropped_{current_time}.png')
-    # pdb.set_trace()
+    base_name = img_orig_path.replace('data/', '').replace('/', '_')[0:-4]
+    output_path = os.path.join('runs/imgs', base_name + '_cropped_' + current_time + str('.png'))
     cv2.imwrite(output_path, selected_roi)
+
 
     # 显示选择的ROI
     cv2.imshow('Selected ROI', selected_roi)
@@ -159,7 +160,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     img_orig_cropped = first_img_crop(img_orig_path=args.first_frame_path)
-
+    #
     print_heading("Executing Function track.run", Color.YELLOW)
     opt = track.parse_opt()
     opt.source = img_orig_cropped
