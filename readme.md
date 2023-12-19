@@ -7,7 +7,7 @@ pip install ultralytics
 ```
 
 ```
-python main.py --first_frame_path  path_to_your_first_image --input_folder path_to_images folder` 
+python main.py --first_frame_path  path_to_your_first_image --input_folder path_to_images folder
 ```
 
 For example:
