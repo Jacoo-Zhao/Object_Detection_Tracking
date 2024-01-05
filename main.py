@@ -128,7 +128,7 @@ def class_selection(img_orig_cropped_path="", detected_objects_path="", draw=Fal
     cv2.imwrite(template_path, imgs[user_input_id])
     print("Template Image Saved:", template_path)
 
-    template_json_path = detected_objects_path.replace('.csv', '.json')
+    template_json_path = detected_objects_path.replace('.csv', '_template.json')
     with open(template_json_path, 'w') as json_file:
         json.dump(data_list[user_input_id], json_file)
 
@@ -159,18 +159,21 @@ if __name__ == '__main__':
     parser.add_argument("--input_folder", help="Path to the input images folder")
     args = parser.parse_args()
 
+    # Crop the first image
     img_orig_cropped = first_img_crop(img_orig_path=args.first_frame_path)
-    #
+
+    # Detect objects
     print_heading("Executing Function track.run", Color.YELLOW)
     opt = track.parse_opt()
     opt.source = img_orig_cropped
     detected_objects_path = track.run(opt)
 
+    # Select interested object class and id
     bbox_template, args.template_json_path = class_selection(img_orig_cropped_path=img_orig_cropped,
                                     detected_objects_path=detected_objects_path,
                                     draw=False)
 
-    # print_heading("Executing Function track.py", Color.GREEN)
-    # main(args)
+    print_heading("Executing Function track.py", Color.GREEN)
+    main(args)
 
 
