@@ -3,7 +3,6 @@ Template Match:template pool + algorithm pool
 """
 import csv
 import json
-import pdb
 
 import cv2
 import pandas as pd
@@ -109,12 +108,16 @@ def find_most_similar_template(template, candidates):
     # return res, most_similar_candidate, max_ssim
     return ids, most_similar_candidate, similarity_indexs
 
+def collect_template_pool(confidence, template_json):
+    template_pool = []
+    template_pool.append('runs/predicted_labels_1704422987243_template.json')
+
 
 if __name__ == "__main__":
+    template_json = 'runs/predicted_labels_1704431183327_template.json'
+    detected_objects = 'runs/predicted_labels_1704431263155.csv'
 
-    template_json = 'runs/predicted_labels_1704422987243_template.json'
-    detected_objects = 'runs/predicted_labels_1704423049016.csv'
-    detected_objects = 'runs/predicted_labels_1704422992895.csv'
+    confidence = 0.7
 
     first_template = produce_first_template(template_json)
     candidates = produce_candidates(detected_objects)
@@ -131,3 +134,5 @@ if __name__ == "__main__":
     for id in ids:
         cv2.imshow('Most similar candidate', candidates[id])
         cv2.waitKey(0)
+
+    # collect_templete_pool(confidence, template_json)

@@ -90,7 +90,7 @@ def run(args):
     directory = 'runs/'
     filepath = os.path.join(directory, filename)
     df.to_csv(filepath, index=False)
-    # print(f'检测结果已保存至: {filepath}')
+    print(f'Results saved to: {filepath}')
     return filepath
 
 
